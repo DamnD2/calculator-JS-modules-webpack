@@ -1,0 +1,19 @@
+.calculator__display{
+	max-width: 100%;
+	min-height: 80px;
+	padding: 15px;
+	text-align: end;
+	&-expression{
+		font-size: 18px;
+		height: 30px;
+		line-height: 30px;
+		color: #838080;
+	}
+	&-result{
+		height: 70px;
+		font-size: 40px;
+		font-weight: 600;
+		line-height: 60px;
+		user-select: text;
+	}
+}

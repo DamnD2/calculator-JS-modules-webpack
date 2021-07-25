@@ -1,0 +1,29 @@
+.number, .operator, .reset, .equal, .null{
+	border: none;
+	outline: none;
+	background-color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 20px;
+	&:hover{
+		background-color: #96949433;
+	}
+	&:active{
+		background-color: #b6b3b3b3;
+	}
+}
+
+.operator{
+	color: blueviolet;
+}
+
+.equal{
+	background-color: rgba(162, 71, 248, 0.3);
+	&:hover{
+		background-color: rgba(162, 71, 248, 0.5);
+	}
+	&:active{
+		background-color: rgba(162, 71, 248, 0.7);
+	}
+}
