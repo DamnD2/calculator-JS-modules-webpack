@@ -1,6 +1,5 @@
 import Button from "../Button/Button";
 import createElement from "../../utils/createElement";
-import buttons from "../../MOCK/mock_keyboardButtons";
 import "./Keyboard.scss";
 import DefaultComponent from "../DefaultComponent/DefaultComponent";
 
@@ -28,7 +27,7 @@ export default class Keyboard extends DefaultComponent{
 		const resultKeyboard = this.getKeyboard;
 
 		keyboard.onclick = event => {
-			this.props.lastClickedItem(event.target)
+				this.props.lastClickedItem(event.target.closest('button'));
 		}
 
 		resultKeyboard.forEach(element => {

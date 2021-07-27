@@ -1,4 +1,4 @@
-import App from "./modules/App/App";
+import App from "./components/App/App";
 
 const app = new App();
 
