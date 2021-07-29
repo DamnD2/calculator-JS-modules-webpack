@@ -16,6 +16,5 @@ export 	default [
 	{value: '/', type: 'operator'},
 	{value: '*', type: 'operator'},
 	{value: '-', type: 'operator'},
-	{value: '+/-', type: 'operator'},
 	{value: 'c', type: 'reset'},
 ]

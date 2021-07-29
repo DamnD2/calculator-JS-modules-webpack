@@ -27,7 +27,9 @@ export default class Keyboard extends DefaultComponent{
 		const resultKeyboard = this.getKeyboard;
 
 		keyboard.onclick = event => {
-				this.props.lastClickedItem(event.target.closest('button'));
+			if(event.target.classList.contains('calculator__keyboard') === false) {
+				this.props.handleClick(event.target.closest('button'));
+			}
 		}
 
 		resultKeyboard.forEach(element => {

@@ -10,15 +10,19 @@ export default class Display extends DefaultComponent{
 		this.resultField = createElement('div', 'calculator__display-result');
 	}
 
-	setFieldValue (field, value) {
-		field = field.innerText = value;
+	showExpressionField (value) {
+		this.expressionField.innerText = value;
+	}
+
+	showResultField (value) {
+		this.resultField.innerText = value;
 	}
 
 	render() {
 		const display = createElement('div', this.props.classList);
 		
-		this.setFieldValue(this.expressionField, 123);
-		this.setFieldValue(this.resultField, 12345);
+		this.showExpressionField('');
+		this.showResultField(0);
 
 		display.append(this.expressionField, this.resultField);
 

@@ -11,6 +11,7 @@ export default class Button {
 		const button = createElement('button', this.classList);
 		
 		button.innerText = this.value;
+		button.value = this.value;
 
 		return button;
 	}
