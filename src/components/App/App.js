@@ -15,7 +15,16 @@ export default class App{
 		this.lastClickedButton = null;
 		this.expressionFieldValue = '';
 		this.resultFieldValue = '0';
-		this.maxResultFieldLength = 8;
+		this.maxResultFieldLength = 10;
+	}
+
+	get buttonTypeMap () {
+		return {
+			'number': this.numberProcessing,
+			'operator': this.operatorProcessing,
+			'reset': this.resetProcessing,
+			'equal': this.equalProcessing,
+		}
 	}
 
 	onClick = button => {
@@ -24,77 +33,74 @@ export default class App{
 		const firstOperand = this.expressionFieldValue.split(' ')[firstOperandIndex];
 		const operator = this.expressionFieldValue.split(' ')[operatorIndex];
 
-
-		if (button.classList.contains('number')) {
-			if (button.value === '.' && this.resultFieldValue.indexOf('.') !== -1) {
-				return;
-			}
-
-			else if (operator && this.resultFieldValue === firstOperand && this.lastClickedButton.classList.contains('operator')) {
-				this.resultFieldValue = button.value;
-				this.display.showResultField(this.resultFieldValue);
-				this.lastClickedButton = button;
-				return;
-			}
-
-			else if (this.lastClickedButton && this.lastClickedButton.classList.contains('operator')) {
-				this.resultFieldValue = button.value;
-			}
-
-			else if (this.resultFieldValue.length < this.maxResultFieldLength) {
-				if (this.resultFieldValue === '0' && button.value !== '.') {
-					this.resultFieldValue = button.value;
-				} else {
-					this.resultFieldValue += button.value;
-				}
-			}
-			else if (this.expressionFieldValue.indexOf('=') !== -1) {
-				this.expressionFieldValue = '';
-				this.resultFieldValue = button.value;
-			}
-		}
-
-
-
-		if (button.classList.contains('operator')) {
-			if (!operator || operator !== button.value ) {
-				this.expressionFieldValue = `${this.resultFieldValue} ${button.value} `
-				this.display.showExpressionField(this.expressionFieldValue);
-			}
-
-			if (this.expressionFieldValue.indexOf('=') !== -1) {
-				this.expressionFieldValue = `${this.resultFieldValue} ${button.value}`;
-				this.display.showExpressionField(this.expressionFieldValue);
-			}
-			else if (operator && this.lastClickedButton.classList.contains('number')) {
-				const result = calculate(operator, firstOperand, this.resultFieldValue, this.maxResultFieldLength);
-				this.resultFieldValue = result;
-				this.expressionFieldValue = `${result} ${button.value} `;
-			}
-		}
-
-
-
-		if (button.classList.contains('reset')) {
-			this.expressionFieldValue = '';
-			this.resultFieldValue = '0';
-		}
-
-
-
-		if (button.classList.contains('equal')) {
-			if (!this.expressionFieldValue || operator === '=') {
-				this.expressionFieldValue = `${this.resultFieldValue} = `;
-			} else {
-				this.resultFieldValue = calculate(operator, firstOperand, this.resultFieldValue, this.maxResultFieldLength);
-				this.expressionFieldValue = `${this.resultFieldValue} ${operator} ${firstOperand} = `;
-			}
-		}
-		
+		const buttonType = button.dataset.type;
+		const processing = this.buttonTypeMap[buttonType];
+		processing(firstOperand, operator, button);
 
 		this.display.showExpressionField(this.expressionFieldValue);
 		this.display.showResultField(this.resultFieldValue);
 		this.lastClickedButton = button;
+	}
+
+
+	numberProcessing = (firstOperand, operator, button) => {
+		if (button.value === '.' && this.resultFieldValue.indexOf('.') !== -1) {
+			return;
+		}
+
+		else if (operator && this.resultFieldValue === firstOperand && this.lastClickedButton.classList.contains('operator')) {
+			this.resultFieldValue = button.value;
+			return;
+		}
+
+		else if (this.lastClickedButton && this.lastClickedButton.classList.contains('operator')) {
+			this.resultFieldValue = button.value;
+		}
+
+		else if (this.resultFieldValue.length < this.maxResultFieldLength) {
+			if (this.resultFieldValue === '0' && button.value !== '.') {
+				this.resultFieldValue = button.value;
+			} else {
+				this.resultFieldValue += button.value;
+			}
+		}
+
+		else if (this.expressionFieldValue.indexOf('=') !== -1) {
+			this.expressionFieldValue = '';
+			this.resultFieldValue = button.value;
+		}
+	}
+
+
+	operatorProcessing = (firstOperand, operator, button) => {
+		if (!operator || operator !== button.value ) {
+			this.expressionFieldValue = `${this.resultFieldValue} ${button.value} `;
+		}
+
+		if (this.expressionFieldValue.indexOf('=') !== -1) {
+			this.expressionFieldValue = `${this.resultFieldValue} ${button.value}`;
+		}
+		else if (operator && this.lastClickedButton.classList.contains('number')) {
+			const result = calculate(operator, firstOperand, this.resultFieldValue, this.maxResultFieldLength);
+			this.resultFieldValue = result;
+			this.expressionFieldValue = `${result} ${button.value} `;
+		}
+	}
+
+
+	resetProcessing = () => {
+		this.expressionFieldValue = '';
+		this.resultFieldValue = '0';
+	}
+
+
+	equalProcessing = (firstOperand, operator) => {
+		if (!this.expressionFieldValue || operator === '=') {
+			this.expressionFieldValue = `${this.resultFieldValue} = `;
+		} else {
+			this.resultFieldValue = calculate(operator, firstOperand, this.resultFieldValue, this.maxResultFieldLength);
+			this.expressionFieldValue = `${firstOperand} ${operator} ${this.resultFieldValue} = `;
+		}
 	}
 	
 
