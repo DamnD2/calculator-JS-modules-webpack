@@ -25,14 +25,15 @@ function numberLengthConversion(number, maxLength) {
     return result.toExponential(maxLength - 5);
   }
 
-  if (result >= maxNumber || result <= -maxLength) {
+  if (result >= maxNumber || result <= 0 - maxNumber) {
     return result.toExponential(maxLength - 5);
   }
 
   if (result.toString().length > maxLength) {
     const integerPartOfNumberLength = parseInt(result).toString().length;
-    console.log(maxLength - integerPartOfNumberLength);
-    return result.toFixed(maxLength - integerPartOfNumberLength);
+    const digits = (maxLength > integerPartOfNumberLength) ? maxLength - integerPartOfNumberLength : 0;
+
+    return result.toFixed(digits);
   }
 
   return result;

@@ -48,12 +48,12 @@ export default class App{
 			return;
 		}
 
-		else if (operator && this.resultFieldValue === firstOperand && this.lastClickedButton.classList.contains('operator')) {
+		else if (operator && this.resultFieldValue === firstOperand && this.lastClickedButton.dataset.type === 'operator') {
 			this.resultFieldValue = button.value;
 			return;
 		}
 
-		else if (this.lastClickedButton && this.lastClickedButton.classList.contains('operator')) {
+		else if (this.lastClickedButton && this.lastClickedButton.dataset.type === 'operator') {
 			this.resultFieldValue = button.value;
 		}
 
@@ -80,7 +80,7 @@ export default class App{
 		if (this.expressionFieldValue.indexOf('=') !== -1) {
 			this.expressionFieldValue = `${this.resultFieldValue} ${button.value}`;
 		}
-		else if (operator && this.lastClickedButton.classList.contains('number')) {
+		else if (operator && this.lastClickedButton.dataset.type === 'number') {
 			const result = calculate(operator, firstOperand, this.resultFieldValue, this.maxResultFieldLength);
 			this.resultFieldValue = result;
 			this.expressionFieldValue = `${result} ${button.value} `;
